@@ -3,30 +3,17 @@ import java.util.Scanner;
 public class Program {
 
 
-    public static int length(char length[]){
+    public static long GetData(long  num) {
 
-        int i ;
-        for (i = 0 ; length[i] != '\0'; i++){}
-        return i;
-
-    }
-
-    public static int Sum(int num) {
-
-        int sum = 0;
+        long sum = 0;
+        long hold = 0;
 
         while (num != 0) {
-            sum += num % 10;
+            sum = num % 10;
             num /= 10;
+            hold = hold * 10 + sum;
         }
-        return sum;
-    }
-
-    public static boolean WeeksChecker(String Week) {
-
-//        System.out.println('"' + Week +'"');
-        if (Week.equals("Week")) return true;
-        else return false;
+        return hold;
     }
 
     public static void ErrorMessage() {
@@ -34,51 +21,69 @@ public class Program {
         System.exit(-1);
     }
 
-//    public static int GetNumber(String number){
-//
-//        int n = 0;
-//
-//        for (int i = 0 ; i < number.length(); i++){
-//          n  = n * 10 + (number.charAt(i) - '0');
-//        }
-//        return n;
-//    }
-
-    public static long StoreData(long Data){
-
+    public static long StoreData() {
         Scanner Sc = new Scanner(System.in);
-        long hold = 0L;
 
         System.out.print("-> ");
-        for (int i = 0 ; i < 5 ; i++)
-        {
-            Data = Sc.nextInt();
-            if (Data < 1 || Data > 9)
-                ErrorMessage();
+        String scoresLine = Sc.nextLine();
+        Scanner lineScanner = new Scanner(scoresLine);
+
+        int count = 0;
+        long hold = 0L;
+
+        while (lineScanner.hasNextInt()) {
+
+            int Data = lineScanner.nextInt();
+            if (Data == 42 && count == 0) return Data;
+            if (Data < 1 || Data > 9) ErrorMessage();
             if (hold == 0 || Data < hold) hold = Data;
-            System.out.println(i);
+            count++;
         }
+
+        if (count != 5) ErrorMessage();
         return hold;
     }
 
+    public static void PrintData(long Data,int Weeks){
+
+        Data = GetData(Data);
+        long  Grade = 0;
+
+        for (int i = 0; i < Weeks; i++) {
+
+            Grade = Data % 10;
+            System.out.print("Week " + (i + 1)+ " ");
+            for (int n = 0; n < Grade; n++)
+                System.out.print("=");
+            System.out.println(">");
+            Data /= 10;
+        }
+        System.exit(0);
+    }
+
     public static void main(String[] args) {
+
         Scanner Sc = new Scanner(System.in);
 
         int WeeksTracker = 0;
         int Week = 0;
         long Data = 0L;
+        long sig = 0L;
+        String Wk = "";
 
-        while (true) {
+        while (true ) {
             System.out.print("-> ");
-            String Wk = Sc.next();
+            Wk = Sc.next();
 
-            if (!(WeeksChecker(Wk))) ErrorMessage();
+            if (Wk.equals("42")) PrintData(Data, WeeksTracker);
+            if (!Wk.equals("Week")) ErrorMessage();
             Week = Sc.nextInt();
             WeeksTracker += 1;
-            if (Week != WeeksTracker || Week < 1 && Week > 18) ErrorMessage();
-
-//            System.out.println(Wk + Week);
-            Data = Data * 10 + StoreData(Data);
+            if (Week != WeeksTracker) ErrorMessage();
+            sig = sig * 10 + StoreData();
+            if (sig != 42)
+                Data = sig;
+            if (Data == 42) PrintData(Data, WeeksTracker);
             System.out.println("-> " + Data);
         }
     }
