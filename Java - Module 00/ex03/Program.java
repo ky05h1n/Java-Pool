@@ -17,7 +17,7 @@ public class Program {
     }
 
     public static void ErrorMessage() {
-        System.out.println("llegalArgument");
+        System.out.println("IllegalArgument");
         System.exit(-1);
     }
 
@@ -66,25 +66,24 @@ public class Program {
         Scanner Sc = new Scanner(System.in);
 
         int WeeksTracker = 0;
-        int Week = 0;
         long Data = 0L;
         long sig = 0L;
         String Wk = "";
 
-        while (true ) {
+        while (true) {
             System.out.print("-> ");
-            Wk = Sc.next();
+            Wk = Sc.nextLine();
 
             if (Wk.equals("42")) PrintData(Data, WeeksTracker);
-            if (!Wk.equals("Week")) ErrorMessage();
-            Week = Sc.nextInt();
+
             WeeksTracker += 1;
-            if (Week != WeeksTracker) ErrorMessage();
+            if (!Wk.equals("Week " + WeeksTracker)) ErrorMessage();
+
             sig = sig * 10 + StoreData();
             if (sig != 42)
                 Data = sig;
-            if (Data == 42) PrintData(Data, WeeksTracker);
-            System.out.println("-> " + Data);
+            if (Data == 42 || WeeksTracker == 18) PrintData(Data, WeeksTracker);
+
         }
     }
 }
