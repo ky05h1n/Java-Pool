@@ -30,6 +30,8 @@ public class Program {
         return Frequency;
     }
 
+    public static 
+
     public static void main(String[] args) {
 
         Scanner Sc = new Scanner(System.in);
